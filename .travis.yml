@@ -3,19 +3,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t dmytro/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t relgang/react-test -f ./client/Dockerfile.dev ./client
   
 script:
-  - docker run dmytro/react-test npm test -- --coverage
+  - docker run -e CI=true relgang/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t dmytro/multi-client ./client
-  - docker build -t dmytro/multi-nginx ./nginx
-  - docker build -t dmytro/multi-server ./server
-  - docker build -t dmytro/multi-worker ./worker
+  - docker build -t relgang/multi-client ./client
+  - docker build -t relgang/multi-nginx ./nginx
+  - docker build -t relgang/multi-server ./server
+  - docker build -t relgang/multi-worker ./worker
   # login
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" -- password-stdin
-  - docker push dmytro/multi-client
-  - docker push dmytro/multi-nginx
-  - docker push dmytro/multi-server
-  - docker push dmytro/multi-worker
+  - docker push relgang/multi-client
+  - docker push relgang/multi-nginx
+  - docker push relgang/multi-server
+  - docker push relgang/multi-worker
